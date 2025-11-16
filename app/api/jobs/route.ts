@@ -1,26 +1,31 @@
+// app/api/jobs/route.ts
 import { NextResponse } from 'next/server';
 import { fetchConfluencePage } from '../../../lib/confluence';
 import { parse } from 'node-html-parser';
 
 type Job = {
   title: string;
-  department: string;
-  location: string;
-  description: string;
-  status: string;
+  department?: string;
+  location?: string;
+  description?: string;
+  status?: string;
 };
 
 export async function GET() {
   try {
-    const baseUrl = process.env.CONFLUENCE_BASE_URL!;
-    const pageId = process.env.CONFLUENCE_PAGE_ID!;
-    const apiToken = process.env.CONFLUENCE_API_TOKEN!;
+    const baseUrl = process.env.CONFLUENCE_BASE_URL;
+    const pageId = process.env.CONFLUENCE_PAGE_ID;
+    const apiToken = process.env.CONFLUENCE_API_TOKEN;
+
+    if (!baseUrl || !pageId || !apiToken) {
+      console.error('Missing Confluence environment variables');
+      return NextResponse.json([], { status: 200 });
+    }
 
     const data = await fetchConfluencePage(pageId, baseUrl, apiToken);
 
-    // Ensure 'data.body' exists
     const html = (data as any)?.body?.storage?.value;
-    if (!html) return NextResponse.json([], { status: 200 }); // Return empty array
+    if (!html) return NextResponse.json([], { status: 200 });
 
     const root = parse(html);
     const table = root.querySelector('table');
@@ -52,17 +57,17 @@ export async function GET() {
         else if (key.includes('status')) rowObj.status = raw.toLowerCase();
       }
 
-      // Only push if row has a title
-      if (rowObj.title) jobs.push(rowObj as Job);
+      if (rowObj.title) {
+        jobs.push(rowObj as Job);
+      }
     }
 
-    // Filter out hired roles
     const filtered = jobs.filter((j) => (j.status || '') !== 'hired');
 
     return NextResponse.json(filtered);
-  } catch (err: any) {
-    console.error(err);
-    // Return empty array on error to prevent frontend crashes
+  } catch (err) {
+    console.error('Error in /api/jobs:', err);
+    // Always return an array
     return NextResponse.json([], { status: 200 });
   }
 }
