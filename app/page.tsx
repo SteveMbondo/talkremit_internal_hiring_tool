@@ -9,6 +9,7 @@ title: string
 department: string
 location: string
 description: string
+status: string
 }
 
 
@@ -27,7 +28,7 @@ fetch('/api/jobs')
 
 
 const filtered = (jobs || [])
-  .filter(job => job.status?.toLowerCase() !== "HIRED")
+  .filter(job => job.status?.toLowerCase() !== "hired")
   .filter(job => {
     if (q && !(`${job.title} ${job.description}`).toLowerCase().includes(q.toLowerCase())) return false
     if (dept && job.department.toLowerCase() !== dept.toLowerCase()) return false
