@@ -1,57 +1,68 @@
-import { NextResponse } from 'next/server'
-import { fetchConfluencePage } from '../../../lib/confluence'
-import { parse } from 'node-html-parser'
+import { NextResponse } from 'next/server';
+import { fetchConfluencePage } from '../../../lib/confluence';
+import { parse } from 'node-html-parser';
 
+type Job = {
+  title: string;
+  department: string;
+  location: string;
+  description: string;
+  status: string;
+};
 
 export async function GET() {
-try {
-const baseUrl = process.env.CONFLUENCE_BASE_URL!
-const pageId = process.env.CONFLUENCE_PAGE_ID!
-const apiToken = process.env.CONFLUENCE_API_TOKEN!
+  try {
+    const baseUrl = process.env.CONFLUENCE_BASE_URL!;
+    const pageId = process.env.CONFLUENCE_PAGE_ID!;
+    const apiToken = process.env.CONFLUENCE_API_TOKEN!;
 
+    const data = await fetchConfluencePage(pageId, baseUrl, apiToken);
 
-const data = await fetchConfluencePage(pageId, baseUrl, apiToken)
-const html = data?.body?.storage?.value
-if (!html) return NextResponse.json({ error: 'No page HTML found' }, { status: 500 })
+    // Ensure 'data.body' exists
+    const html = (data as any)?.body?.storage?.value;
+    if (!html) return NextResponse.json([], { status: 200 }); // Return empty array
 
+    const root = parse(html);
+    const table = root.querySelector('table');
+    if (!table) return NextResponse.json([], { status: 200 });
 
-const root = parse(html)
-const table = root.querySelector('table')
-if (!table) return NextResponse.json([], { status: 200 })
+    const rows = table.querySelectorAll('tr');
+    if (rows.length < 2) return NextResponse.json([], { status: 200 });
 
+    const headerCells = rows[0]
+      .querySelectorAll('th,td')
+      .map((n) => n.text.trim().toLowerCase());
 
-const rows = table.querySelectorAll('tr')
-if (rows.length < 2) return NextResponse.json([], { status: 200 })
+    const jobs: Job[] = [];
 
+    for (let i = 1; i < rows.length; i++) {
+      const cells = rows[i].querySelectorAll('td');
+      if (cells.length === 0) continue;
 
-const headerCells = rows[0].querySelectorAll('th,td').map(n => n.text.trim().toLowerCase())
+      const rowObj: Partial<Job> = {};
 
+      for (let j = 0; j < headerCells.length; j++) {
+        const key = headerCells[j];
+        const raw = (cells[j]?.innerText || '').trim();
 
-const jobs: any[] = []
-for (let i = 1; i < rows.length; i++) {
-const cells = rows[i].querySelectorAll('td')
-if (cells.length === 0) continue
-const rowObj: any = {}
-for (let j = 0; j < headerCells.length; j++) {
-const key = headerCells[j]
-const raw = (cells[j]?.innerText || '').trim()
-if (key.includes('job')) rowObj.title = raw
-else if (key.includes('department')) rowObj.department = raw
-else if (key.includes('location')) rowObj.location = raw
-else if (key.includes('description')) rowObj.description = raw
-else if (key.includes('status')) rowObj.status = raw.toLowerCase()
-else rowObj[key] = raw
-}
-jobs.push(rowObj)
-}
+        if (key.includes('job')) rowObj.title = raw;
+        else if (key.includes('department')) rowObj.department = raw;
+        else if (key.includes('location')) rowObj.location = raw;
+        else if (key.includes('description')) rowObj.description = raw;
+        else if (key.includes('status')) rowObj.status = raw.toLowerCase();
+      }
 
+      // Only push if row has a title
+      if (rowObj.title) jobs.push(rowObj as Job);
+    }
 
-const filtered = jobs.filter(j => (j.status || '') !== 'hired')
+    // Filter out hired roles
+    const filtered = jobs.filter((j) => (j.status || '') !== 'hired');
 
-
-return NextResponse.json(filtered)
-} catch (err: any) {
-console.error(err)
-return NextResponse.json({ error: err.message || 'Unknown error' }, { status: 500 })
-}
+    return NextResponse.json(filtered);
+  } catch (err: any) {
+    console.error(err);
+    // Return empty array on error to prevent frontend crashes
+    return NextResponse.json([], { status: 200 });
+  }
 }
