@@ -1,13 +1,8 @@
-/** @type {import('next').NextConfig} */
+@type {import('next').NextConfig}
 const nextConfig = {
+
   images: {
-    remotePatterns: [
-      {
-        protocol: 'https',
-        hostname: 'prod-refactor-cms.talkremit.com',
-        pathname: '/wp-content/uploads/**',
-      },
-    ],
+    domains: ['prod-refactor-cms.talkremit.com'],
   },
 };
 
