@@ -1,0 +1,57 @@
+import { NextResponse } from 'next/server'
+import { fetchConfluencePage } from '../../../lib/confluence'
+import { parse } from 'node-html-parser'
+
+
+export async function GET() {
+try {
+const baseUrl = process.env.CONFLUENCE_BASE_URL!
+const pageId = process.env.CONFLUENCE_PAGE_ID!
+const apiToken = process.env.CONFLUENCE_API_TOKEN!
+
+
+const data = await fetchConfluencePage(pageId, baseUrl, apiToken)
+const html = data?.body?.storage?.value
+if (!html) return NextResponse.json({ error: 'No page HTML found' }, { status: 500 })
+
+
+const root = parse(html)
+const table = root.querySelector('table')
+if (!table) return NextResponse.json([], { status: 200 })
+
+
+const rows = table.querySelectorAll('tr')
+if (rows.length < 2) return NextResponse.json([], { status: 200 })
+
+
+const headerCells = rows[0].querySelectorAll('th,td').map(n => n.text.trim().toLowerCase())
+
+
+const jobs: any[] = []
+for (let i = 1; i < rows.length; i++) {
+const cells = rows[i].querySelectorAll('td')
+if (cells.length === 0) continue
+const rowObj: any = {}
+for (let j = 0; j < headerCells.length; j++) {
+const key = headerCells[j]
+const raw = (cells[j]?.innerText || '').trim()
+if (key.includes('job')) rowObj.title = raw
+else if (key.includes('department')) rowObj.department = raw
+else if (key.includes('location')) rowObj.location = raw
+else if (key.includes('description')) rowObj.description = raw
+else if (key.includes('status')) rowObj.status = raw.toLowerCase()
+else rowObj[key] = raw
+}
+jobs.push(rowObj)
+}
+
+
+const filtered = jobs.filter(j => (j.status || '') !== 'hired')
+
+
+return NextResponse.json(filtered)
+} catch (err: any) {
+console.error(err)
+return NextResponse.json({ error: err.message || 'Unknown error' }, { status: 500 })
+}
+}
