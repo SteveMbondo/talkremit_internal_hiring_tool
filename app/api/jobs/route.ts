@@ -1,3 +1,4 @@
+// app/api/jobs/route.ts
 import { NextResponse } from 'next/server';
 import { fetchConfluencePage } from '../../../lib/confluence';
 import { parse } from 'node-html-parser';
@@ -18,32 +19,50 @@ export async function GET() {
     const data = await fetchConfluencePage(pageId, baseUrl);
     const html = (data as any)?.body?.storage?.value;
 
-    if (!html) return NextResponse.json([], { status: 200 });
+    if (!html) {
+      console.warn('Confluence page returned empty HTML');
+      return NextResponse.json([], { status: 200 });
+    }
 
     const root = parse(html);
 
-    // Find all job blocks
-    const jobBlocks = root.querySelectorAll('tr, div') // adjust selector to match your HTML
-      .filter((el) => el.text.includes('Job Title')); // crude filter to find table rows / divs
+    const rows = root.querySelectorAll('tr');
+
+    if (!rows || rows.length < 2) return NextResponse.json([], { status: 200 });
+
+    // Extract header cells
+    const headerCells = rows[0]
+      .querySelectorAll('th, td')
+      .map((n) => n.text.trim().toLowerCase());
 
     const jobs: Job[] = [];
 
-    jobBlocks.forEach((block) => {
-      const text = block.text.replace(/\n\s*/g, '\n').split('\n').map(t => t.trim()).filter(Boolean);
-      if (text.length < 5) return; // not enough info
+    for (let i = 1; i < rows.length; i++) {
+      const cells = rows[i].querySelectorAll('td');
+      if (cells.length === 0) continue;
 
-      const job: Job = {
-        title: text[0],
-        department: text[1],
-        location: text[2],
-        description: text[3],
-        status: text[4].toLowerCase(),
-      };
+      const rowObj: Partial<Job> = {};
 
-      if (job.status !== 'hired') jobs.push(job);
-    });
+      for (let j = 0; j < headerCells.length; j++) {
+        const key = headerCells[j];
+        const raw = (cells[j]?.innerText || '').trim();
 
-    return NextResponse.json(jobs);
+        if (key.includes('job')) rowObj.title = raw;
+        else if (key.includes('department')) rowObj.department = raw;
+        else if (key.includes('location')) rowObj.location = raw;
+        else if (key.includes('description')) rowObj.description = raw;
+        else if (key.includes('status')) rowObj.status = raw.toLowerCase();
+      }
+
+      if (rowObj.title) jobs.push(rowObj as Job);
+    }
+
+    // Filter out roles that are "hired"
+    const openJobs = jobs.filter((j) => j.status !== 'hired');
+
+    console.log('Jobs parsed:', openJobs.length);
+
+    return NextResponse.json(openJobs);
   } catch (err) {
     console.error('Error in /api/jobs:', err);
     return NextResponse.json([], { status: 200 });
