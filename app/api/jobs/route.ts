@@ -12,8 +12,13 @@ type Job = {
 
 export async function GET() {
   try {
-    const baseUrl = process.env.CONFLUENCE_BASE_URL!;
-    const pageId = process.env.CONFLUENCE_PAGE_ID!;
+    const baseUrl = process.env.CONFLUENCE_BASE_URL;
+    const pageId = process.env.CONFLUENCE_PAGE_ID;
+
+    if (!baseUrl || !pageId) {
+      console.error('Missing CONFLUENCE_BASE_URL or CONFLUENCE_PAGE_ID');
+      return NextResponse.json([], { status: 500 });
+    }
 
     const data = await fetchConfluencePage(pageId, baseUrl);
     const html = (data as any)?.body?.storage?.value;
@@ -61,7 +66,6 @@ export async function GET() {
 
     console.log('All parsed jobs:', jobs);
 
-    // Normalize and filter open roles
     const openJobs = jobs.filter((j) => {
       const status = j.status?.toLowerCase() || '';
       return status.includes('open');
@@ -72,6 +76,6 @@ export async function GET() {
     return NextResponse.json(openJobs);
   } catch (err) {
     console.error('Error in /api/jobs:', err);
-    return NextResponse.json([], { status: 200 });
+    return NextResponse.json([], { status: 500 });
   }
 }
