@@ -16,19 +16,20 @@ export async function GET() {
 
   if (!baseUrl || !pageId) {
     console.error('Missing CONFLUENCE_BASE_URL or CONFLUENCE_PAGE_ID');
-    return NextResponse.json({ error: 'Missing Confluence configuration' }, { status: 500 });
+    return NextResponse.json(
+      { error: 'Missing Confluence configuration' },
+      { status: 500 }
+    );
   }
 
   try {
     const data = await fetchConfluencePage(pageId, baseUrl);
-    const html = (data as any)?.body?.storage?.value;
+    const html = data?.body?.storage?.value;
 
     if (!html || typeof html !== 'string') {
       console.warn('Confluence page returned empty or invalid HTML');
       return NextResponse.json([], { status: 200 });
     }
-
-    console.log('Raw HTML snippet:', html.substring(0, 500));
 
     const root = parse(html);
     const rows = root.querySelectorAll('tr');
@@ -38,25 +39,25 @@ export async function GET() {
       return NextResponse.json([], { status: 200 });
     }
 
+    // Extract header names
     const headerCells = rows[0]
       .querySelectorAll('th, td')
-      .map((n) => n.text.trim().toLowerCase());
-
-    console.log('Parsed headers:', headerCells);
+      .map((cell) => cell.text.trim().toLowerCase());
 
     const jobs: Job[] = [];
 
     for (let i = 1; i < rows.length; i++) {
       const cells = rows[i].querySelectorAll('td');
-      if (cells.length === 0) continue;
+      if (!cells || cells.length === 0) continue;
 
       const rowObj: Partial<Job> = {};
 
       for (let j = 0; j < headerCells.length; j++) {
         const key = headerCells[j];
-        const raw = (cells[j]?.innerText || '').trim();
+        const raw = cells[j]?.text?.trim() || '';
 
-        if (!key) continue;
+        if (!key || !raw) continue;
+
         if (key.includes('job')) rowObj.title = raw;
         else if (key.includes('department')) rowObj.department = raw;
         else if (key.includes('location')) rowObj.location = raw;
@@ -67,19 +68,14 @@ export async function GET() {
       if (rowObj.title) jobs.push(rowObj as Job);
     }
 
-    console.log('All parsed jobs:', jobs);
-
-    // Consider "open" statuses
-    const openJobs = jobs.filter((j) => {
-      const s = j.status || '';
-      return /open/i.test(s); // matches "open to application", "OPEN TO APPLICATION", etc.
-    });
-
-    console.log('Open jobs found:', openJobs.length);
+    // Filter for open jobs
+    const openJobs = jobs.filter((job) =>
+      (job.status || '').toLowerCase().includes('open')
+    );
 
     return NextResponse.json(openJobs, { status: 200 });
-  } catch (err: any) {
-    console.error('Error in /api/jobs:', err?.message || err);
-    return NextResponse.json({ error: 'Failed to load jobs' }, { status: 500 });
-  }
-}
+  } catch (err: unknown) {
+    console.error('Error in /api/jobs:', err);
+    return NextResponse.json(
+      { error: 'Failed to load jobs' },
+      { stat
