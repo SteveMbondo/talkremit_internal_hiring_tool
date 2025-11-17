@@ -76,7 +76,7 @@ export async function GET() {
     console.error('Error in /api/jobs:', err);
     return NextResponse.json(
       { error: 'Failed to load jobs' },
-      { status: 500 } // <-- fixed here
+      { status: 500 }
     );
   }
 }
