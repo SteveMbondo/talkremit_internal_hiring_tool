@@ -22,7 +22,7 @@ export async function GET() {
       return NextResponse.json([], { status: 200 });
     }
 
-    const data = await fetchConfluencePage(pageId, baseUrl, apiToken);
+    const data = await fetchConfluencePage(pageId, baseUrl);
 
     const html = (data as any)?.body?.storage?.value;
     if (!html) return NextResponse.json([], { status: 200 });
