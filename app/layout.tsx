@@ -22,35 +22,29 @@ export default function RootLayout({ children }: { children: React.ReactNode }) 
         <div className="flex-1">
           {/* Header */}
           <header className="bg-white shadow-sm">
-            {/* Hero Section */}
-            <section className="relative bg-blue-600 text-white py-20 overflow-hidden">
-              <div className="absolute inset-0 flex">
-                <div className="flex-1 bg-gradient-to-br from-[#4737a4] to-[#36f8fc]">
-                  <div className="mt-4 ml-2 w-fit max-w-full">
-                    <Image
-                      src="https://prod-refactor-cms.talkremit.com/wp-content/uploads/2021/05/TR-logo-light.svg"
-                      alt="TalkRemit Logo"
-                      width={173}
-                      height={28}
-                      className="h-auto w-[140px] max-w-full"
-                     />
-                  </div>
+            <section className="relative bg-blue-600 text-white py-12 sm:py-16 overflow-hidden">
+              <div className="absolute inset-0">
+                <div className="h-full w-full bg-gradient-to-br from-[#4737a4] to-[#36f8fc] flex items-start sm:items-center justify-start px-4 sm:px-8">
+                  <Image
+                    src="https://prod-refactor-cms.talkremit.com/wp-content/uploads/2021/05/TR-logo-light.svg"
+                    alt="TalkRemit Logo"
+                    width={173}
+                    height={28}
+                  />
                 </div>
               </div>
-              
-
-              <div className="relative z-10 max-w-4xl mx-auto text-center flex flex-col items-center gap-6 px-4">
-                <h1 className="text-4xl md:text-5xl font-bold mt-2">
+              <div className="relative z-10 max-w-3xl mx-auto text-center flex flex-col items-center gap-6 px-4 sm:px-6">
+                <h1 className="text-3xl sm:text-4xl md:text-5xl font-bold mt-6">
                   Join the TalkRemit Team
                 </h1>
-
-                <p className="text-lg md:text-xl max-w-2xl">
+                <p className="text-base sm:text-lg md:text-xl max-w-2xl">
                   TalkRemit is a fully-licensed EMI (Electronic Money Institution) that enables people to send money to bank accounts, mobile wallets and cash pickup locations abroad.
                   Founded in 2016, our diverse team has used their experiences of migrant life and the issues with existing remittance services to build something that better serves migrant communities across the globe. Now we’re busy further improving our platform and creating additional financial products for the communities who most need them, to become a one-stop shop serving the needs of migrants around the world.
-                  To Join us, Email your updated CV to : hr@talkRemit.com, with the position clearly indicated on the subject line.
+                  To join us, email your updated CV to <strong>hr@talkRemit.com</strong>, with the position clearly indicated on the subject line.
                 </p>
               </div>
-            </section>
+           </section>
+
           </header>
 
           {/* Main content */}
