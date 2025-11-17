@@ -1,4 +1,3 @@
-// app/api/jobs/route.ts
 import { NextResponse } from 'next/server';
 import { fetchConfluencePage } from '../../../lib/confluence';
 import { parse } from 'node-html-parser';
@@ -25,15 +24,18 @@ export async function GET() {
     }
 
     const root = parse(html);
-
     const rows = root.querySelectorAll('tr');
 
-    if (!rows || rows.length < 2) return NextResponse.json([], { status: 200 });
+    if (!rows || rows.length < 2) {
+      console.warn('No table rows found in Confluence page');
+      return NextResponse.json([], { status: 200 });
+    }
 
-    // Extract header cells
     const headerCells = rows[0]
       .querySelectorAll('th, td')
       .map((n) => n.text.trim().toLowerCase());
+
+    console.log('Parsed headers:', headerCells);
 
     const jobs: Job[] = [];
 
@@ -57,10 +59,15 @@ export async function GET() {
       if (rowObj.title) jobs.push(rowObj as Job);
     }
 
-    // Filter out roles that are "hired"
-    const openJobs = jobs.filter((j) => j.status !== 'hired');
+    console.log('All parsed jobs:', jobs);
 
-    console.log('Jobs parsed:', openJobs.length);
+    // Normalize and filter open roles
+    const openJobs = jobs.filter((j) => {
+      const status = j.status?.toLowerCase() || '';
+      return status.includes('open');
+    });
+
+    console.log('Open jobs found:', openJobs.length);
 
     return NextResponse.json(openJobs);
   } catch (err) {
