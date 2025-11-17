@@ -17,16 +17,32 @@ export async function GET() {
 
     if (!baseUrl || !pageId) {
       console.error('Missing CONFLUENCE_BASE_URL or CONFLUENCE_PAGE_ID');
-      return NextResponse.json([], { status: 500 });
+      return NextResponse.json(
+        { error: 'Missing Confluence configuration' },
+        { status: 500 }
+      );
     }
 
-    const data = await fetchConfluencePage(pageId, baseUrl);
+    let data;
+    try {
+      data = await fetchConfluencePage(pageId, baseUrl);
+    } catch (fetchErr: any) {
+      console.error('Failed to fetch Confluence page:', fetchErr.message);
+      return NextResponse.json(
+        { error: 'Failed to fetch Confluence page' },
+        { status: 500 }
+      );
+    }
+
     const html = (data as any)?.body?.storage?.value;
 
     if (!html) {
       console.warn('Confluence page returned empty HTML');
       return NextResponse.json([], { status: 200 });
     }
+
+    // Debug: log first 500 chars of HTML
+    console.log('Raw HTML snippet:', html.substring(0, 500));
 
     const root = parse(html);
     const rows = root.querySelectorAll('tr');
@@ -74,8 +90,11 @@ export async function GET() {
     console.log('Open jobs found:', openJobs.length);
 
     return NextResponse.json(openJobs);
-  } catch (err) {
-    console.error('Error in /api/jobs:', err);
-    return NextResponse.json([], { status: 500 });
+  } catch (err: any) {
+    console.error('Error in /api/jobs:', err.message || err);
+    return NextResponse.json(
+      { error: 'Unexpected error in /api/jobs' },
+      { status: 500 }
+    );
   }
 }
