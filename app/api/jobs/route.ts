@@ -39,7 +39,6 @@ export async function GET() {
       return NextResponse.json([], { status: 200 });
     }
 
-    // Extract header names
     const headerCells = rows[0]
       .querySelectorAll('th, td')
       .map((cell) => cell.text.trim().toLowerCase());
@@ -68,7 +67,6 @@ export async function GET() {
       if (rowObj.title) jobs.push(rowObj as Job);
     }
 
-    // Filter for open jobs
     const openJobs = jobs.filter((job) =>
       (job.status || '').toLowerCase().includes('open')
     );
@@ -78,4 +76,8 @@ export async function GET() {
     console.error('Error in /api/jobs:', err);
     return NextResponse.json(
       { error: 'Failed to load jobs' },
-      { stat
+      { status: 500 } // <-- fixed here
+    );
+  }
+}
+
