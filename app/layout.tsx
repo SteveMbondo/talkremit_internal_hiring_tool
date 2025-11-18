@@ -18,34 +18,32 @@ export default function RootLayout({ children }: { children: React.ReactNode }) 
   return (
     <html lang="en">
       <body className={`${poppins.className} flex flex-col min-h-screen overflow-x-hidden`}>
-        
         <div className="flex-1">
-
           {/* Header */}
           <header className="bg-white shadow-sm">
-            
             {/* Hero Section */}
             <section className="relative bg-blue-600 text-white py-20 overflow-hidden">
               <div className="absolute inset-0 flex">
                 <div className="flex-1 bg-gradient-to-br from-[#4737a4] to-[#36f8fc]">
-                <div className="mt-4 ml-2">
-                  <Image
-                    src="https://prod-refactor-cms.talkremit.com/wp-content/uploads/2021/05/TR-logo-light.svg"
-                    alt="TalkRemit Logo"
-                    width={173}
-                    height={28}
+                  <div className="mt-4 ml-2">
+                    <Image
+                      src="https://prod-refactor-cms.talkremit.com/wp-content/uploads/2021/05/TR-logo-light.svg"
+                      alt="TalkRemit Logo"
+                      width={173}
+                      height={28}
                     />
+                  </div>
+
+                  <h1 className="text-3xl sm:text-4xl md:text-5xl font-bold">
+                    Join the TalkRemit Team
+                  </h1>
+
+                  <p className="text-base sm:text-lg md:text-xl max-w-2xl">
+                    TalkRemit is a fully-licensed EMI (Electronic Money Institution) that enables people to send money to bank accounts, mobile wallets and cash pickup locations abroad.
+                    Founded in 2016, our diverse team has used their experiences of migrant life and the issues with existing remittance services to build something that better serves migrant communities across the globe. Now we’re busy further improving our platform and creating additional financial products for the communities who most need them, to become a one-stop shop serving the needs of migrants around the world.
+                    To join us, email your updated CV to <strong>hr@talkRemit.com</strong>, with the position clearly indicated on the subject line.
+                  </p>
                 </div>
-                
-                <h1 className="text-3xl sm:text-4xl md:text-5xl font-bold">
-                  Join the TalkRemit Team
-                </h1>
-                
-                <p className="text-base sm:text-lg md:text-xl max-w-2xl">
-                  TalkRemit is a fully-licensed EMI (Electronic Money Institution) that enables people to send money to bank accounts, mobile wallets and cash pickup locations abroad.
-                  Founded in 2016, our diverse team has used their experiences of migrant life and the issues with existing remittance services to build something that better serves migrant communities across the globe. Now we’re busy further improving our platform and creating additional financial products for the communities who most need them, to become a one-stop shop serving the needs of migrants around the world.
-                  To join us, email your updated CV to <strong>hr@talkRemit.com</strong>, with the position clearly indicated on the subject line.
-                </p>
               </div>
             </section>
           </header>
@@ -56,11 +54,9 @@ export default function RootLayout({ children }: { children: React.ReactNode }) 
           </main>
         </div>
 
-
         {/* Footer */}
         <footer className="bg-white text-gray-800 mt-8 border-t border-gray-200">
           <div className="max-w-4xl mx-auto px-4 py-8 flex flex-col md:flex-row justify-between items-center gap-6">
-
             {/* Logo */}
             <div className="mb-4 md:mb-0">
               <a href="/" aria-label="Logo">
@@ -118,7 +114,6 @@ export default function RootLayout({ children }: { children: React.ReactNode }) 
             &copy; 2025 Steve Mbondo. All rights reserved.
           </div>
         </footer>
-
       </body>
     </html>
   )
