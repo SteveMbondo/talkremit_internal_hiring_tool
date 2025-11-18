@@ -46,7 +46,7 @@ export default function RootLayout({ children }: { children: React.ReactNode }) 
                 <p className="text-lg md:text-xl max-w-2xl">
                   TalkRemit is a fully-licensed EMI (Electronic Money Institution) that enables people to send money to bank accounts, mobile wallets and cash pickup locations abroad.
                   Founded in 2016, our diverse team has used their experiences of migrant life and the issues with existing remittance services to build something that better serves migrant communities across the globe. Now we’re busy further improving our platform and creating additional financial products for the communities who most need them, to become a one-stop shop serving the needs of migrants around the world.
-                  To Join us, Email your updated CV to : hr@talkRemit.com, with the position clearly indicated on the subject line.
+                  To Join us, Email your updated CV to : <strong>hr@talkRemit.com</strong>, with the position clearly indicated on the subject line.
                 </p>
               </div>
             </section>
