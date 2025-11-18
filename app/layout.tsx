@@ -25,7 +25,7 @@ export default function RootLayout({ children }: { children: React.ReactNode }) 
           <header className="bg-white shadow-sm">
             
             {/* Hero Section */}
-            <section className="bg-gradient-to-br from-[#4737a4] to-[#36f8fc] text-white py-16 px-4">
+            <section className="bg-gradient-to-br from-[#4737a4] to-[#36f8fc] text-white">
               <div className="max-w-4xl mx-auto flex flex-col items-center gap-6">
                 <div className="mb-6">
                   <Image
