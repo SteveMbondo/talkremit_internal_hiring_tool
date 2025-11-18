@@ -25,7 +25,9 @@ export default function RootLayout({ children }: { children: React.ReactNode }) 
             {/* Hero Section */}
             <section className="relative bg-blue-600 text-white py-20 overflow-hidden">
               <div className="absolute inset-0 flex">
-                <div className="h-full w-full absolute inset-0 flex bg-gradient-to-br from-[#4737a4] to-[#36f8fc]">
+                <div className="h-full w-full bg-gradient-to-br from-[#4737a4] to-[#36f8fc]">
+              </div>
+                <div className="relative z-10 max-w-4xl mx-auto px-4">
                   <div className="mt-5 ml-6">
                     <Image 
                     src="https://prod-refactor-cms.talkremit.com/wp-content/uploads/2021/05/TR-logo-light.svg"
@@ -35,22 +37,19 @@ export default function RootLayout({ children }: { children: React.ReactNode }) 
                     />
                   </div>
                 </div>
-              </div>
-              
-
-              <div className="relative z-10 max-w-4xl mx-auto text-center flex flex-col items-center gap-6 px-4">
-                <h1 className="text-4xl md:text-5xl font-bold mt-2">
-                  Join the TalkRemit Team
-                </h1>
-
-                <p className="text-lg md:text-xl max-w-2xl">
-                  TalkRemit is a fully-licensed EMI (Electronic Money Institution) that enables people to send money to bank accounts, mobile wallets and cash pickup locations abroad.
-                  Founded in 2016, our diverse team has used their experiences of migrant life and the issues with existing remittance services to build something that better serves migrant communities across the globe. Now we’re busy further improving our platform and creating additional financial products for the communities who most need them, to become a one-stop shop serving the needs of migrants around the world.
-                  To Join us, Email your updated CV to : <strong>hr@talkRemit.com</strong>, with the position clearly indicated on the subject line.
-                </p>
-              </div>
-            </section>
-          </header>
+                <div className="relative z-10 max-w-4xl mx-auto text-center flex flex-col items-center gap-6 px-4">
+                  <h1 className="text-4xl md:text-5xl font-bold mt-2">
+                    Join the TalkRemit Team
+                  </h1>
+                  
+                  <p className="text-lg md:text-xl max-w-2xl">
+                    TalkRemit is a fully-licensed EMI (Electronic Money Institution) that enables people to send money to bank accounts, mobile wallets and cash pickup locations abroad.
+                    Founded in 2016, our diverse team has used their experiences of migrant life and the issues with existing remittance services to build something that better serves migrant communities across the globe. Now we’re busy further improving our platform and creating additional financial products for the communities who most need them, to become a one-stop shop serving the needs of migrants around the world.
+                    To Join us, Email your updated CV to : <strong>hr@talkRemit.com</strong>, with the position clearly indicated on the subject line.
+                  </p>
+                </div>
+              </section>
+            </header>
 
           {/* Main content */}
           <main className="max-w-4xl mx-auto p-8">
