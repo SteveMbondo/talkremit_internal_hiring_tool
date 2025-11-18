@@ -25,9 +25,10 @@ export default function RootLayout({ children }: { children: React.ReactNode }) 
           <header className="bg-white shadow-sm">
             
             {/* Hero Section */}
-            <section className="bg-gradient-to-br from-[#4737a4] to-[#36f8fc] text-white">
-              <div className="max-w-4xl mx-auto flex flex-col items-center gap-6">
-                <div className="mb-6">
+            <section className="relative bg-blue-600 text-white py-20 overflow-hidden">
+              <div className="absolute inset-0 flex">
+                <div className="flex-1 bg-gradient-to-br from-[#4737a4] to-[#36f8fc]">
+                <div className="mt-4 ml-2">
                   <Image
                     src="https://prod-refactor-cms.talkremit.com/wp-content/uploads/2021/05/TR-logo-light.svg"
                     alt="TalkRemit Logo"
