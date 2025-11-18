@@ -26,7 +26,7 @@ export default function RootLayout({ children }: { children: React.ReactNode }) 
             
             {/* Hero Section */}
             <section className="bg-gradient-to-br from-[#4737a4] to-[#36f8fc] text-white py-16 px-4">
-              <div className="max-w-4xl mx-auto text-center flex flex-col items-center gap-6">
+              <div className="max-w-4xl mx-auto flex flex-col items-center gap-6">
                 <div className="mb-6">
                   <Image
                     src="https://prod-refactor-cms.talkremit.com/wp-content/uploads/2021/05/TR-logo-light.svg"
