@@ -39,7 +39,7 @@ export default function RootLayout({ children }: { children: React.ReactNode }) 
               
 
               <div className="relative z-10 max-w-4xl mx-auto text-center flex flex-col items-center gap-6 px-4">
-                <h1 className="text-4xl md:text-5xl font-bold mt-2">
+                <h1 className="text-4xl md:text-5xl font-bold mt-2 ml-2">
                   Join the TalkRemit Team
                 </h1>
 
