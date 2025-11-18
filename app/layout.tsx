@@ -9,7 +9,6 @@ const poppins = Poppins({
   weight: ['300','400','500','600','700'],
 });
 
-
 export const metadata = {
   title: 'TalkRemit Careers',
   description: 'Internal Careers Portal',
@@ -26,14 +25,14 @@ export default function RootLayout({ children }: { children: React.ReactNode }) 
             <section className="relative bg-blue-600 text-white py-20 overflow-hidden">
               <div className="absolute inset-0 flex">
                 <div className="h-full w-full bg-gradient-to-br from-[#4737a4] to-[#36f8fc]">
-              </div>
+                </div>
                 <div className="relative z-10 max-w-4xl mx-auto px-4">
                   <div className="mt-5 ml-6">
                     <Image 
-                    src="https://prod-refactor-cms.talkremit.com/wp-content/uploads/2021/05/TR-logo-light.svg"
-                    alt="TalkRemit Logo"
-                    width={173}
-                    height={28}
+                      src="https://prod-refactor-cms.talkremit.com/wp-content/uploads/2021/05/TR-logo-light.svg"
+                      alt="TalkRemit Logo"
+                      width={173}
+                      height={28}
                     />
                   </div>
                 </div>
@@ -41,15 +40,15 @@ export default function RootLayout({ children }: { children: React.ReactNode }) 
                   <h1 className="text-4xl md:text-5xl font-bold mt-2">
                     Join the TalkRemit Team
                   </h1>
-                  
                   <p className="text-lg md:text-xl max-w-2xl">
                     TalkRemit is a fully-licensed EMI (Electronic Money Institution) that enables people to send money to bank accounts, mobile wallets and cash pickup locations abroad.
                     Founded in 2016, our diverse team has used their experiences of migrant life and the issues with existing remittance services to build something that better serves migrant communities across the globe. Now we’re busy further improving our platform and creating additional financial products for the communities who most need them, to become a one-stop shop serving the needs of migrants around the world.
                     To Join us, Email your updated CV to : <strong>hr@talkRemit.com</strong>, with the position clearly indicated on the subject line.
                   </p>
                 </div>
-              </section>
-            </header>
+              </div>
+            </section>
+          </header>
 
           {/* Main content */}
           <main className="max-w-4xl mx-auto p-8">
@@ -90,26 +89,22 @@ export default function RootLayout({ children }: { children: React.ReactNode }) 
               <ul className="flex gap-4">
                 <li>
                   <a href="https://x.com/talkremit" target="_blank" rel="noopener noreferrer" className="text-gray-600 hover:text-blue-500 transition-colors">
-                  {/* The X icon for Twitter */}
-                  <X className="h-6 w-6" />
+                    <X className="h-6 w-6" />
                   </a>
                 </li>
                 <li>
                   <a href="https://www.facebook.com/talkremit/" target="_blank" rel="noopener noreferrer" className="text-gray-600 hover:text-blue-600 transition-colors">
-                  {/* The Facebook icon */}
-                  <Facebook className="h-6 w-6" />
+                    <Facebook className="h-6 w-6" />
                   </a>
                 </li>
                 <li>
                   <a href="https://www.instagram.com/talkremit/" target="_blank" rel="noopener noreferrer" className="text-gray-600 hover:text-pink-500 transition-colors">
-                  {/* The Instagram icon */}
-                  <Instagram className="h-6 w-6" />
+                    <Instagram className="h-6 w-6" />
                   </a>
                 </li>
                 <li>
                   <a href="https://www.linkedin.com/company/talkremit" target="_blank" rel="noopener noreferrer" className="text-gray-600 hover:text-blue-700 transition-colors">
-                  {/* The LinkedIn icon */}
-                  <Linkedin className="h-6 w-6" />
+                    <Linkedin className="h-6 w-6" />
                   </a>
                 </li>
               </ul>
