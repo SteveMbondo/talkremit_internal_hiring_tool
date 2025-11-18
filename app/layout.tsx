@@ -23,40 +23,31 @@ export default function RootLayout({ children }: { children: React.ReactNode }) 
 
           {/* Header */}
           <header className="bg-white shadow-sm">
-
+            
             {/* Hero Section */}
-            <section className="relative bg-blue-600 text-white py-16 sm:py-20">
-
-              
-              <div className="absolute inset-0 bg-gradient-to-br from-[#4737a4] to-[#36f8fc] px-4 pt-4">
-                <Image 
-                  src="https://prod-refactor-cms.talkremit.com/wp-content/uploads/2021/05/TR-logo-light.svg"
-                  alt="TalkRemit Logo"
-                  width={173}
-                  height={28}
-                  className="w-[150px] sm:w-[173px] h-auto"
-                />
-              </div>
-
-              
-              <div className="relative z-10 max-w-4xl mx-auto text-center flex flex-col items-center gap-6 px-4">
-
-                <h1 className="text-3xl sm:text-4xl md:text-5xl font-bold mt-6">
+            <section className="bg-gradient-to-br from-[#4737a4] to-[#36f8fc] text-white py-16 px-4">
+              <div className="max-w-4xl mx-auto text-center flex flex-col items-center gap-6">
+                <div className="mb-6">
+                  <Image
+                    src="https://prod-refactor-cms.talkremit.com/wp-content/uploads/2021/05/TR-logo-light.svg"
+                    alt="TalkRemit Logo"
+                    width={173}
+                    height={28}
+                    />
+                </div>
+                
+                <h1 className="text-3xl sm:text-4xl md:text-5xl font-bold">
                   Join the TalkRemit Team
                 </h1>
-
-                <p className="text-base sm:text-lg md:text-xl max-w-2xl px-1">
+                
+                <p className="text-base sm:text-lg md:text-xl max-w-2xl">
                   TalkRemit is a fully-licensed EMI (Electronic Money Institution) that enables people to send money to bank accounts, mobile wallets and cash pickup locations abroad.
-                  Founded in 2016, our diverse team has used their experiences of migrant life and the issues with existing remittance services to build something that better serves migrant communities across the globe.
-                  Now we’re busy further improving our platform and creating additional financial products for the communities who most need them, to become a one-stop shop serving the needs of migrants around the world.
-                  To join us, email your updated CV to <strong>hr@talkRemit.com</strong> with the position clearly indicated on the subject line.
+                  Founded in 2016, our diverse team has used their experiences of migrant life and the issues with existing remittance services to build something that better serves migrant communities across the globe. Now we’re busy further improving our platform and creating additional financial products for the communities who most need them, to become a one-stop shop serving the needs of migrants around the world.
+                  To join us, email your updated CV to <strong>hr@talkRemit.com</strong>, with the position clearly indicated on the subject line.
                 </p>
-
               </div>
             </section>
-
           </header>
-
 
           {/* Main content */}
           <main className="max-w-4xl mx-auto p-6 sm:p-8">
